@@ -220,6 +220,7 @@ export type ChartStyleSectionRow = {
   template?: ChartStyleSectionRow;
   comType: ValueOf<typeof ChartStyleSectionComponentType>;
   hidden?: boolean;
+  rows?: ChartStyleSectionRow[];
 };
 
 export type ChartStyleSectionRowOption = {

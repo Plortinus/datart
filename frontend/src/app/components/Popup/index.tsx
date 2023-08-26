@@ -28,11 +28,18 @@ export function Popup({
     setVisible(false);
   }, []);
 
-  const injectedContent = useMemo(
-    () =>
-      isValidElement(content) ? cloneElement(content, { onClose }) : content,
-    [content, onClose],
-  );
+  // const injectedContent = useMemo(
+  //   () =>
+  //     isValidElement(content) ? cloneElement(content, { onClose }) : content,
+  //   [content, onClose],
+  // );
+  const injectedContent = useMemo(() => {
+    if (isValidElement(content)) {
+      const { onClose, ...restProps } = content.props;
+      return cloneElement(content, { ...restProps, onClose });
+    }
+    return content;
+  }, [content, onClose]);
 
   const className = mergeClassNames(overlayClassName, 'datart-popup');
   return (
