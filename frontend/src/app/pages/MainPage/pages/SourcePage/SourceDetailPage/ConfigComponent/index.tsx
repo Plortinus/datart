@@ -29,7 +29,8 @@ import {
 import useI18NPrefix from 'app/hooks/useI18NPrefix';
 import { QueryResult } from 'app/pages/MainPage/pages/ViewPage/slice/types';
 import { DataProviderAttribute } from 'app/pages/MainPage/slice/types';
-import { Rule } from 'rc-field-form/lib/interface';
+// import { Rule } from 'rc-field-form/lib/interface';
+import { Rule } from 'antd/node_modules/rc-field-form/lib/interface';
 import { ReactElement } from 'react';
 import { ArrayConfig } from './ArrayConfig';
 import { FileUpload } from './FileUpload';
