@@ -40,8 +40,10 @@ import { getTime, splitRangerDateFilters } from 'app/utils/time';
 import {
   DATE_FORMATTER,
   FilterSqlOperator,
+  PUBLIC_URL,
   TIME_FORMATTER,
 } from 'globalConstants';
+import startsWith from 'lodash/startsWith';
 import moment from 'moment';
 import { CloneValueDeep } from 'utils/object';
 import { boardDrillManager } from '../components/BoardDrillManager/BoardDrillManager';
@@ -72,8 +74,8 @@ export const dateFormatObj = {
 };
 
 export const convertImageUrl = (urlKey: string = ''): string => {
-  if (urlKey.startsWith(BOARD_FILE_IMG_PREFIX)) {
-    return `${window.location.origin}/${urlKey}`;
+  if (startsWith(urlKey, BOARD_FILE_IMG_PREFIX)) {
+    return `${window.location.origin}${PUBLIC_URL}/${urlKey}`;
   }
   return urlKey;
 };
@@ -87,7 +89,7 @@ export const getBackgroundImage = (url: string = ''): string => {
  */
 export const adaptBoardImageUrl = (url: string = '', curBoardId: string) => {
   const splitter = BOARD_FILE_IMG_PREFIX;
-  if (!url.startsWith(splitter)) return url;
+  if (!startsWith(url, splitter)) return url;
   if (!curBoardId) return url;
   const originalBoardId = url.split(splitter)[1].split('/')[0];
   const nextUrl = url.replace(originalBoardId, curBoardId);
@@ -406,7 +408,7 @@ export const getChartWidgetRequestParams = (obj: {
   widgetInfo: WidgetInfo | undefined;
   option: getDataOption | undefined;
   viewMap: Record<string, ChartDataView>;
-  dataChartMap: Record<string, DataChart>;
+  dashboardDataChartMap: Record<string, DataChart>;
   boardLinkFilters?: BoardLinkFilter[];
   drillOption: ChartDrillOption | undefined;
 }) => {
@@ -415,7 +417,7 @@ export const getChartWidgetRequestParams = (obj: {
     widgetMap,
     viewMap,
     widgetInfo,
-    dataChartMap,
+    dashboardDataChartMap,
     option,
     boardLinkFilters,
     drillOption,
@@ -425,7 +427,7 @@ export const getChartWidgetRequestParams = (obj: {
   if (!curWidget) return null;
   if (curWidget.config.type !== 'chart') return null;
   if (!curWidget.datachartId) return null;
-  const dataChart = dataChartMap[curWidget.datachartId];
+  const dataChart = dashboardDataChartMap[curWidget.datachartId];
   if (!dataChart) {
     // errorHandle(`can\`t find Chart ${curWidget.datachartId}`);
     return null;
@@ -501,9 +503,9 @@ export const getChartWidgetRequestParams = (obj: {
 export const getBoardChartRequests = (params: {
   widgetMap: Record<string, Widget>;
   viewMap: Record<string, ChartDataView>;
-  dataChartMap: Record<string, DataChart>;
+  dashboardDataChartMap: Record<string, DataChart>;
 }) => {
-  const { widgetMap, viewMap, dataChartMap } = params;
+  const { widgetMap, viewMap, dashboardDataChartMap } = params;
   const chartWidgetIds = Object.values(widgetMap)
     .filter(w => w.config.type === 'chart')
     .map(w => w.id);
@@ -523,7 +525,7 @@ export const getBoardChartRequests = (params: {
           viewMap,
           option: undefined,
           widgetInfo: undefined,
-          dataChartMap,
+          dashboardDataChartMap,
           drillOption,
         }),
         ...{

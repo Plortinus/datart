@@ -195,7 +195,6 @@ const widgetInfoRecordSlice = createSlice({
     closeWidgetEditing(state, action: PayloadAction<string>) {
       const id = action.payload;
       if (id) {
-        state[id].selected = false;
         state[id].editing = false;
       } else {
         for (let key of Object.keys(state)) {
@@ -362,8 +361,7 @@ const filterActions = [
   editBoardStackActions.updateBoardConfigByKey,
   editBoardStackActions.updateWidgetStyleConfigByPath,
   editBoardStackActions.changeFreeWidgetRect,
-  editBoardStackActions.dropWidgetToTab,
-  editBoardStackActions.dropWidgetToGroup,
+  editBoardStackActions.dropWidgetLayer,
 ].map(ele => ele.toString());
 const editBoardStackReducer = undoable(editBoardStackSlice.reducer, {
   undoType: BOARD_UNDO.undo,
